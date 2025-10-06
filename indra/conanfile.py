@@ -135,5 +135,21 @@ class SecondLifeViewer(ConanFile):
         LL_BUILD_LINUX_DEBUG                        = f"{LL_BUILD_LINUX_DEBUG_SWITCHES} {LL_BUILD_LINUX_DEBUG_MACROS}"
         LL_BUILD_LINUX_DEBUGOS                      = f"{LL_BUILD_LINUX_DEBUG}"
 
-        # TODO
-        return LL_BUILD_WINDOWS_DEBUG
+        if self.settings.os == "Windows":
+            build_options = (LL_BUILD_WINDOWS_DEBUG, LL_BUILD_WINDOWS_RELEASE, LL_BUILD_WINDOWS_RELWITHDEBINFO)
+        elif self.settings.os == "Linux":
+            build_options = (LL_BUILD_LINUX_DEBUG, LL_BUILD_LINUX_RELEASE, LL_BUILD_LINUX_RELWITHDEBINFO)
+        elif self.settings.os == "Macos":
+            build_options = (LL_BUILD_DARWIN_DEBUG, LL_BUILD_DARWIN_RELEASE, LL_BUILD_DARWIN_RELWITHDEBINFO)
+
+        if self.settings.build_type == "Debug":
+            options = build_options[0]
+        elif self.settings.build_type == "Release":
+            options = build_options[1]
+        elif self.settings.build_type == "RelWithDebInfo":
+            options = build_options[2]
+
+        if self.settings.compiler == "gcc":
+            options += " -Wno-error=nonnull"
+
+        return options
