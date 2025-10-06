@@ -33,7 +33,7 @@
 #include "llsys.h"
 
 #include <iostream>
-#ifdef LL_USESYSTEMLIBS
+#if defined(LL_USESYSTEMLIBS) || defined(USE_CONAN)
 # include <zlib.h>
 #else
 # include "zlib-ng/zlib.h"

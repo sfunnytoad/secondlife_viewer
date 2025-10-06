@@ -1,4 +1,7 @@
 # -*- cmake -*-
+if (USE_CONAN)
+# TODO
+else (USE_CONAN)
 
 set(PYTHONINTERP_FOUND)
 
@@ -55,3 +58,5 @@ endif (NOT python)
 
 set(PYTHON_EXECUTABLE "${python}" CACHE FILEPATH "Python interpreter for builds")
 mark_as_advanced(PYTHON_EXECUTABLE)
+
+endif (USE_CONAN)

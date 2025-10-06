@@ -1,4 +1,10 @@
 # -*- cmake -*-
+if (USE_CONAN)
+
+find_package(Vorbis REQUIRED)
+
+else (USE_CONAN)
+
 include(Linking)
 include(Prebuilt)
 
@@ -35,3 +41,4 @@ find_library(VORBISFILE_LIBRARY
 
 target_link_libraries(ll::vorbis INTERFACE ${VORBISENC_LIBRARY} ${VORBISFILE_LIBRARY} ${VORBIS_LIBRARY} ${OGG_LIBRARY} )
 
+endif (USE_CONAN)

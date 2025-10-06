@@ -5,8 +5,9 @@ include(Prebuilt)
 include_guard()
 add_library( ll::zlib-ng INTERFACE IMPORTED )
 
-if(USE_CONAN )
-  target_link_libraries( ll::zlib-ng INTERFACE CONAN_PKG::zlib )
+if (USE_CONAN)
+  find_package(ZLIB REQUIRED)
+  target_link_libraries( ll::zlib-ng INTERFACE ZLIB::ZLIB )
   return()
 endif()
 

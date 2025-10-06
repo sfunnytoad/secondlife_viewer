@@ -1,4 +1,10 @@
 # -*- cmake -*-
+if (USE_CONAN)
+
+find_package(OpenAL REQUIRED)
+
+else (USE_CONAN)
+
 include(Linking)
 include(Prebuilt)
 
@@ -40,3 +46,5 @@ if (USE_OPENAL)
   target_link_libraries(ll::openal INTERFACE ${OPENAL_LIBRARY} ${ALUT_LIBRARY})
 
 endif ()
+
+endif (USE_CONAN)

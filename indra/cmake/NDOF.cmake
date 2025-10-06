@@ -1,4 +1,8 @@
 # -*- cmake -*-
+if (USE_CONAN)
+# TODO
+else (USE_CONAN)
+
 include(Prebuilt)
 
 set(NDOF ON CACHE BOOL "Use NDOF space navigator joystick library.")
@@ -24,4 +28,4 @@ if (NDOF)
   target_compile_definitions(ll::ndof INTERFACE LIB_NDOF=1)
 endif (NDOF)
 
-
+endif (USE_CONAN)

@@ -1,4 +1,8 @@
 # -*- cmake -*-
+if (USE_CONAN)
+# TODO
+else (USE_CONAN)
+
 include(Linking)
 include(Prebuilt)
 
@@ -22,3 +26,5 @@ find_library(VLCCORE_LIBRARY
     PATHS "${ARCH_PREBUILT_DIRS_RELEASE}" REQUIRED NO_DEFAULT_PATH)
 
 target_link_libraries(ll::libvlc INTERFACE ${VLC_LIBRARY} ${VLCCORE_LIBRARY})
+
+endif (USE_CONAN)

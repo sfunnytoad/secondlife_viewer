@@ -12,14 +12,18 @@
 # Switches set here and in 00-Common.cmake must agree with
 # https://bitbucket.org/lindenlab/viewer-build-variables/src/tip/variables
 # Reading $LL_BUILD is an attempt to directly use those switches.
-if ("$ENV{LL_BUILD}" STREQUAL "" AND "${LL_BUILD_ENV}" STREQUAL "" )
-  message(FATAL_ERROR "Environment variable LL_BUILD must be set")
-elseif("$ENV{LL_BUILD}" STREQUAL "")
-  set( ENV{LL_BUILD} "${LL_BUILD_ENV}" )
-  message( "Setting ENV{LL_BUILD} to cached variable ${LL_BUILD_ENV}" )
-else()
-  set( LL_BUILD_ENV "$ENV{LL_BUILD}" CACHE STRING "Save environment" FORCE )
+if ("${LL_BUILD}" STREQUAL "")
+  if ("$ENV{LL_BUILD}" STREQUAL "" AND "${LL_BUILD_ENV}" STREQUAL "" )
+    message(FATAL_ERROR "Environment variable LL_BUILD must be set")
+  elseif("$ENV{LL_BUILD}" STREQUAL "")
+    set( ENV{LL_BUILD} "${LL_BUILD_ENV}" )
+    message( "Setting ENV{LL_BUILD} to cached variable ${LL_BUILD_ENV}" )
+  else()
+    set( LL_BUILD_ENV "$ENV{LL_BUILD}" CACHE STRING "Save environment" FORCE )
+  endif ()
+  set( LL_BUILD "$ENV{LL_BUILD}" )
 endif ()
+
 include_guard()
 
 # Relative and absolute paths to subtrees.
@@ -143,14 +147,14 @@ endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(DARWIN 1)
 
-  string(REGEX MATCH "-mmacosx-version-min=([^ ]+)" scratch "$ENV{LL_BUILD}")
+  string(REGEX MATCH "-mmacosx-version-min=([^ ]+)" scratch "${LL_BUILD}")
   set(CMAKE_OSX_DEPLOYMENT_TARGET "${CMAKE_MATCH_1}" CACHE STRING "macOS Deploy Target" FORCE)
   message(STATUS "CMAKE_OSX_DEPLOYMENT_TARGET = '${CMAKE_OSX_DEPLOYMENT_TARGET}'")
 
   # Use dwarf symbols for most libraries for compilation speed
   set(CMAKE_XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf")
 
-  string(REGEX MATCH "-O([^ ]*)" scratch "$ENV{LL_BUILD}")
+  string(REGEX MATCH "-O([^ ]*)" scratch "${LL_BUILD}")
   set(CMAKE_XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "${CMAKE_MATCH_1}")
   message(STATUS "CMAKE_XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL = '${CMAKE_XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL}'")
 

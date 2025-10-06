@@ -1,9 +1,16 @@
+include_guard()
+add_library( ll::apr INTERFACE IMPORTED )
+
+if (USE_CONAN)
+
+find_package(apr REQUIRED)
+find_package(apr-util REQUIRED)
+target_link_libraries(ll::apr INTERFACE apr::apr apr-util::apr-util)
+
+else (USE_CONAN)
+
 include(Linking)
 include(Prebuilt)
-
-include_guard()
-
-add_library( ll::apr INTERFACE IMPORTED )
 
 use_system_binary( apr apr-util )
 use_prebuilt_binary(apr_suite)
@@ -31,3 +38,5 @@ if(DARWIN)
 endif()
 
 target_include_directories(ll::apr SYSTEM INTERFACE ${LIBS_PREBUILT_DIR}/include/apr-1)
+
+endif (USE_CONAN)

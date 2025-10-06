@@ -1,4 +1,8 @@
 # -*- cmake -*-
+if (USE_CONAN)
+# TODO
+else (USE_CONAN)
+
 include(Prebuilt)
 
 set(NVAPI ON CACHE BOOL "Use NVAPI.")
@@ -11,3 +15,4 @@ if (NVAPI)
   endif (WINDOWS)
 endif (NVAPI)
 
+endif (USE_CONAN)

@@ -17,26 +17,30 @@ if (USE_TRACY)
   option(USE_TRACY_LOCAL_ONLY "Disallow remote Tracy profiling." OFF)
   option(USE_TRACY_GPU "Use Tracy GPU profiling" OFF)
 
-  use_system_binary(tracy)
-  use_prebuilt_binary(tracy)
+  if (USE_CONAN)
+    find_package(Tracy REQUIRED)
+    target_link_libraries(ll::tracy INTERFACE Tracy::TracyClient)
+  else (USE_CONAN)
+      use_prebuilt_binary(tracy)
 
-  target_include_directories( ll::tracy SYSTEM INTERFACE ${LIBS_PREBUILT_DIR}/include/tracy)
+      target_include_directories( ll::tracy SYSTEM INTERFACE ${LIBS_PREBUILT_DIR}/include/tracy)
 
-  target_compile_definitions(ll::tracy INTERFACE -DTRACY_ENABLE=1 -DTRACY_ONLY_IPV4=1)
+      target_compile_definitions(ll::tracy INTERFACE -DTRACY_ENABLE=1 -DTRACY_ONLY_IPV4=1)
 
-  if (USE_TRACY_ON_DEMAND)
-    target_compile_definitions(ll::tracy INTERFACE -DTRACY_ON_DEMAND=1)
-  endif ()
+      if (USE_TRACY_ON_DEMAND)
+        target_compile_definitions(ll::tracy INTERFACE -DTRACY_ON_DEMAND=1)
+      endif ()
 
-  if (USE_TRACY_LOCAL_ONLY)
-    target_compile_definitions(ll::tracy INTERFACE -DTRACY_NO_BROADCAST=1 -DTRACY_ONLY_LOCALHOST=1)
-  endif ()
+      if (USE_TRACY_LOCAL_ONLY)
+        target_compile_definitions(ll::tracy INTERFACE -DTRACY_NO_BROADCAST=1 -DTRACY_ONLY_LOCALHOST=1)
+      endif ()
 
-  if (USE_TRACY_GPU AND NOT DARWIN) # Tracy OpenGL mode is incompatible with macOS/iOS
-    target_compile_definitions(ll::tracy INTERFACE -DLL_PROFILER_ENABLE_TRACY_OPENGL=1)
-  endif ()
+      if (USE_TRACY_GPU AND NOT DARWIN) # Tracy OpenGL mode is incompatible with macOS/iOS
+        target_compile_definitions(ll::tracy INTERFACE -DLL_PROFILER_ENABLE_TRACY_OPENGL=1)
+      endif ()
 
-  # See: indra/llcommon/llprofiler.h
-  add_compile_definitions(LL_PROFILER_CONFIGURATION=3)
+      # See: indra/llcommon/llprofiler.h
+      add_compile_definitions(LL_PROFILER_CONFIGURATION=3)
+  endif (USE_CONAN)
 endif (USE_TRACY)
 

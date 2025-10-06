@@ -12,6 +12,7 @@ include(Copy3rdPartyLibs)
 include(ZLIBNG)
 include(Tracy)
 include(SSE2NEON)
+include(GLM)
 
 set(llcommon_SOURCE_FILES
     apply.cpp
@@ -261,7 +262,7 @@ if (DARWIN)
   list(APPEND llcommon_SOURCE_FILES llsys_objc.mm)
 endif (DARWIN)
 
-if (USE_TRACY)
+if (USE_TRACY AND NOT USE_CONAN)
   list(APPEND llcommon_SOURCE_FILES llprofiler.cpp)
 endif ()
 
@@ -278,6 +279,9 @@ target_link_libraries(
         ll::oslibraries
         ll::tracy
         ll::sse2neon
+        ll::xxhash
+        ll::glm
+        ll::zlib-ng
     )
 
 target_include_directories(llcommon INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

@@ -1,4 +1,10 @@
 # -*- cmake -*-
+if (USE_CONAN)
+
+find_package(hunspell REQUIRED)
+
+else (USE_CONAN)
+
 include(Linking)
 include(Prebuilt)
 
@@ -22,3 +28,5 @@ find_library(HUNSPELL_LIBRARY
 target_link_libraries(ll::hunspell INTERFACE ${HUNSPELL_LIBRARY})
 
 target_include_directories( ll::hunspell SYSTEM INTERFACE ${LIBS_PREBUILT_DIR}/include/hunspell)
+
+endif (USE_CONAN)

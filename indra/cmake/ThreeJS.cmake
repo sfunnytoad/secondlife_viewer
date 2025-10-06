@@ -1,4 +1,8 @@
 # -*- cmake -*-
+if (USE_CONAN)
+# TODO
+else (USE_CONAN)
+
 use_prebuilt_binary(threejs)
 
 # Main three.js file
@@ -6,3 +10,5 @@ configure_file("${AUTOBUILD_INSTALL_DIR}/js/three.min.js" "${CMAKE_SOURCE_DIR}/n
 
 # Controls to move around the scene using mouse or keyboard
 configure_file("${AUTOBUILD_INSTALL_DIR}/js/OrbitControls.js" "${CMAKE_SOURCE_DIR}/newview/skins/default/html/common/equirectangular/js/OrbitControls.js" COPYONLY)
+
+endif (USE_CONAN)

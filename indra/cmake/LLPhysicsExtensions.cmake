@@ -1,4 +1,8 @@
 # -*- cmake -*-
+if (USE_CONAN)
+# TODO
+else (USE_CONAN)
+
 include(Prebuilt)
 
 # There are three possible solutions to provide the llphysicsextensions:
@@ -33,3 +37,5 @@ else (HAVOK)
 endif (HAVOK)
 
 target_include_directories( llphysicsextensions_impl INTERFACE   ${LIBS_PREBUILT_DIR}/include/llphysicsextensions)
+
+endif (USE_CONAN)

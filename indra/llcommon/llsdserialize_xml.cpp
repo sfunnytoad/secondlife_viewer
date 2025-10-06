@@ -35,7 +35,7 @@
 
 extern "C"
 {
-#ifdef LL_USESYSTEMLIBS
+#if defined(LL_USESYSTEMLIBS) || defined(USE_CONAN)
 # include <expat.h>
 #else
 # include "expat/expat.h"

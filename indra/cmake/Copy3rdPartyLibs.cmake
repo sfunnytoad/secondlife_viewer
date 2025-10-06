@@ -275,10 +275,17 @@ to_staging_dirs(
     ${release_files}
     )
 
+if (USE_CONAN)
+# TODO
+add_custom_target(
+        stage_third_party_libs ALL
+)
+else (USE_CONAN)
 add_custom_target(
         stage_third_party_libs ALL
         DEPENDS ${third_party_targets}
 )
+endif (USE_CONAN)
 
 if(DARWIN)
     # Support our "@executable_path/../Resources" load path for executables
