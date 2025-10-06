@@ -1,48 +1,67 @@
-# Build Instructions
+# Second Life Viewer - Conan Proof of Concept
 
-### Prerequisites
-- Ensure **Conan 2.x** is installed.
-- Confirm your Conan profile is configured for **C++20**:
-  ```bash
-  conan profile show default
-  ```
+This repository contains proof-of-concept work for building the `indra/llcommon` library using Conan package manager with modern C++20 and CMake.
 
-  Update it if necessary:
+## Prerequisites
 
-  ```bash
-  conan profile update settings.compiler.cppstd=20 default
-  ```
+- **Conan 2.x** must be installed on your system
+- Your Conan profile must be configured for **C++20**
 
-### Build Steps
-From the indra/ directory:
+### Verify Conan Configuration
 
-1. Install dependencies via Conan:
-   ```bash
-   conan install . --build=missing
-   ```
+Check your current Conan profile:
+```bash
+conan profile show default
+```
 
-2. Configure the CMake build (using the Conan-generated preset):
-   ```bash
-   cmake --preset conan-release
-   ```
+If C++20 is not configured, update your profile:
+```bash
+conan profile update settings.compiler.cppstd=20 default
+```
 
-3. Build the project:
-   ```bash
-   cmake --build --preset conan-release
-   ```
+## Platform Support
 
-# Known Issues / To-Do
-- OpenAL package failure
+| Platform | Status |
+|----------|--------|
+| 🪟 Windows | ✅ Supported |
+| 🐧 Linux | ✅ Supported |
+| 🍎 macOS | 🚧 Work in Progress |
 
-  The Conan OpenAL package currently fails to download due to an expired SSL certificate at openal-soft.org
+## Build Instructions
 
-  __Temporary workaround:__ edit the package recipe at `~/.conan2/p/openaf47db0a4b219/e/conanfile.py` and modify the `source()` method as follows:
+Navigate to the `indra/` directory and follow these steps:
 
-  ```python
-  def source(self):
+### 1. Install Dependencies
+```bash
+conan install . --build=missing
+```
+
+### 2. Configure CMake Build
+```bash
+cmake --preset conan-release
+```
+
+### 3. Build the Project
+```bash
+cmake --build --preset conan-release
+```
+
+## Known Issues
+
+### OpenAL Package Failure
+The Conan OpenAL package currently fails to download due to an expired SSL certificate at openal-soft.org.
+
+**Temporary Workaround:**
+Edit the package recipe at `~/.conan2/p/openaf47db0a4b219/e/conanfile.py` and modify the `source()` method:
+
+```python
+def source(self):
     get(self, **self.conan_data["sources"][self.version],
         strip_root=True, verify=False)
-  ```
+```
 
-- Upgrade APR to 1.7.5
-- Replace zlib with zlib-ng
+## Roadmap
+
+- [ ] Upgrade APR to version 1.7.5
+- [ ] Replace zlib with zlib-ng for improved performance
+- [ ] Create sse2neon Conan package for macOS ARM64 support
