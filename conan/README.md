@@ -31,17 +31,23 @@ conan profile update settings.compiler.cppstd=20 default
 
 Navigate to the `indra/` directory and follow these steps:
 
-### 1. Install Dependencies
+### 1. macOS Prerequisite (macOS only)
+For macOS builds, first create the sse2neon package from the `conan/` directory:
+```bash
+conan create recipes/sse2neon --version=1.8.0 --build=missing
+```
+
+### 2. Install Dependencies
 ```bash
 conan install . --build=missing
 ```
 
-### 2. Configure CMake Build
+### 3. Configure CMake Build
 ```bash
 cmake --preset conan-release
 ```
 
-### 3. Build the Project
+### 4. Build the Project
 ```bash
 cmake --build --preset conan-release
 ```
@@ -64,4 +70,3 @@ def source(self):
 
 - [ ] Upgrade APR to version 1.7.5
 - [ ] Replace zlib with zlib-ng for improved performance
-- [ ] Create sse2neon Conan package for macOS ARM64 support

@@ -37,6 +37,8 @@ class SecondLifeViewer(ConanFile):
         self.requires("tracy/0.12.2")
         self.requires("zlib/1.3.1")
         self.requires("glm/1.0.1")
+        if self.settings.os == "Macos":
+            self.requires("sse2neon/1.8.0")
 
     def validate(self):
         check_min_cppstd(self, "20")
@@ -53,10 +55,10 @@ class SecondLifeViewer(ConanFile):
         tc.variables["LL_BUILD"]            = self.configure_ll_build()
         tc.variables["CMAKE_CXX_STANDARD"]  = "20"
 
-        if self.settings.arch in ["x86_64"]:
+        if self.settings.arch in ["x86_64", "armv8", "aarch64"]:
             self.output.info("64-bit build detected.")
             tc.variables["ADDRESS_SIZE"] = "64"
-        elif self.settings.arch in ["x86"]:
+        elif self.settings.arch in ["x86", "armv7", "armv7hf"]:
             self.output.info("32-bit build detected.")
             tc.variables["ADDRESS_SIZE"] = "32"
         else:
@@ -100,7 +102,7 @@ class SecondLifeViewer(ConanFile):
         LL_BUILD_DARWIN_BASE_SWITCHES               = f"-g --debug -mmacosx-version-min={LL_BUILD_DARWIN_DEPLOY_TARGET} {LL_BUILD_POSIX_BASE_SWITCHES}"
         LL_BUILD_DARWIN_BASE                        = f"{LL_BUILD_DARWIN_BASE_SWITCHES} {LL_BUILD_DARWIN_BASE_MACROS}"
 
-        LL_BUILD_DARWIN_RELEASE_MACROS              = "-DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG {LL_BUILD_DARWIN_BASE_MACROS}"
+        LL_BUILD_DARWIN_RELEASE_MACROS              = f"-DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG {LL_BUILD_DARWIN_BASE_MACROS}"
         LL_BUILD_DARWIN_RELEASE_SWITCHES            = f"-O3 {LL_BUILD_DARWIN_BASE_SWITCHES}"
         LL_BUILD_DARWIN_RELEASE                     = f"{LL_BUILD_DARWIN_RELEASE_SWITCHES} {LL_BUILD_DARWIN_RELEASE_MACROS}"
         LL_BUILD_DARWIN_RELEASEOS                   = f"{LL_BUILD_DARWIN_RELEASE}"
